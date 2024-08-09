@@ -8,6 +8,8 @@ import androidx.core.view.WindowInsetsCompat
 import com.abadzheva.shoppinglist.R
 
 class ShopItemActivity : AppCompatActivity() {
+    private lateinit var viewModel: ShopItemViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,5 +20,6 @@ class ShopItemActivity : AppCompatActivity() {
             insets
         }
         // ---------------------------
+//        viewModel.errorInputName.value = false
     }
 }
