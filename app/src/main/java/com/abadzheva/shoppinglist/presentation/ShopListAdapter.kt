@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.abadzheva.shoppinglist.R
 import com.abadzheva.shoppinglist.domain.ShopItem
+import java.util.Locale
 
 class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
@@ -40,7 +41,7 @@ class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCa
             onShopItemClickListener?.invoke(shopItem)
         }
         viewHolder.tvName.text = shopItem.name
-        viewHolder.tvCount.text = shopItem.count.toString()
+        viewHolder.tvCount.text = String.format(Locale.getDefault(), "%d", shopItem.count)
     }
 
     override fun getItemViewType(position: Int): Int {

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.abadzheva.shoppinglist.R
 import com.abadzheva.shoppinglist.domain.ShopItem
 import com.google.android.material.textfield.TextInputLayout
+import java.util.Locale
 
 class ShopItemFragment : Fragment() {
     private lateinit var tilName: TextInputLayout
@@ -163,7 +164,7 @@ class ShopItemFragment : Fragment() {
         viewModel.getShopItem(shopItemId)
         viewModel.shopItem.observe(viewLifecycleOwner) {
             etName.setText(it.name)
-            etCount.setText(it.count.toString())
+            etCount.setText(String.format(Locale.getDefault(), "%d", it.count))
         }
         saveButton.setOnClickListener {
             viewModel.editShopItem(etName.text?.toString(), etCount.text?.toString())
