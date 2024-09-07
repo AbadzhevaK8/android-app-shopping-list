@@ -9,7 +9,6 @@ import com.abadzheva.shoppinglist.R
 import com.abadzheva.shoppinglist.databinding.ItemShopDisabledBinding
 import com.abadzheva.shoppinglist.databinding.ItemShopEnabledBinding
 import com.abadzheva.shoppinglist.domain.ShopItem
-import java.util.Locale
 
 class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
@@ -50,25 +49,33 @@ class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCa
         }
         when (binding) {
             is ItemShopDisabledBinding -> {
-                binding.tvName.text = shopItem.name
-                binding.tvCount.text =
-                    String.format(
-                        Locale.getDefault(),
-                        "%d",
-                        shopItem.count,
-                    )
+                binding.shopItem = shopItem
             }
-
             is ItemShopEnabledBinding -> {
-                binding.tvName.text = shopItem.name
-                binding.tvCount.text =
-                    String.format(
-                        Locale.getDefault(),
-                        "%d",
-                        shopItem.count,
-                    )
+                binding.shopItem = shopItem
             }
         }
+//        when (binding) {
+//            is ItemShopDisabledBinding -> {
+//                binding.tvName.text = shopItem.name
+//                binding.tvCount.text =
+//                    String.format(
+//                        Locale.getDefault(),
+//                        "%d",
+//                        shopItem.count,
+//                    )
+//            }
+//
+//            is ItemShopEnabledBinding -> {
+//                binding.tvName.text = shopItem.name
+//                binding.tvCount.text =
+//                    String.format(
+//                        Locale.getDefault(),
+//                        "%d",
+//                        shopItem.count,
+//                    )
+//            }
+//        }
     }
 
     override fun getItemViewType(position: Int): Int {
