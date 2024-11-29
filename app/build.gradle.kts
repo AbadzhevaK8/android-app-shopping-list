@@ -7,11 +7,12 @@ plugins {
 
 android {
     namespace = "com.abadzheva.shoppinglist"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.abadzheva.shoppinglist"
         minSdk = 26
+        //noinspection OldTargetApi
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
