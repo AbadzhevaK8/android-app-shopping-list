@@ -1,9 +1,13 @@
 package com.abadzheva.shoppinglist.domain
 
-class DeleteShopItemUseCase(
-    private val shopListRepository: ShopListRepository,
-) {
-    suspend fun deleteShopItem(shopItem: ShopItem) {
-        shopListRepository.deleteShopItem(shopItem)
+import javax.inject.Inject
+
+class DeleteShopItemUseCase
+    @Inject
+    constructor(
+        private val shopListRepository: ShopListRepository,
+    ) {
+        suspend fun deleteShopItem(shopItem: ShopItem) {
+            shopListRepository.deleteShopItem(shopItem)
+        }
     }
-}

@@ -1,9 +1,13 @@
 package com.abadzheva.shoppinglist.domain
 
-class AddShopItemUseCase(
-    private val shopListRepository: ShopListRepository,
-) {
-    suspend fun addShopItem(shopItem: ShopItem) {
-        shopListRepository.addShopItem(shopItem)
+import javax.inject.Inject
+
+class AddShopItemUseCase
+    @Inject
+    constructor(
+        private val shopListRepository: ShopListRepository,
+    ) {
+        suspend fun addShopItem(shopItem: ShopItem) {
+            shopListRepository.addShopItem(shopItem)
+        }
     }
-}
