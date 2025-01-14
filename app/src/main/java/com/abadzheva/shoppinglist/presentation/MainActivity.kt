@@ -58,7 +58,7 @@ class MainActivity :
             }
         }
         contentResolver.query(
-            "content://com.abadzheva.shoppinglist/shop_items".toUri(),
+            "content://com.abadzheva.shoppinglist/shop_items/3".toUri(),
             null,
             null,
             null,

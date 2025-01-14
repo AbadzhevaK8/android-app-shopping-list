@@ -15,16 +15,21 @@ class ShopListProvider : ContentProvider() {
                 "shop_items",
                 GET_SHOP_ITEMS_QUERY,
             )
+            addURI(
+                "com.abadzheva.shoppinglist",
+                "shop_items/#",
+                GET_SHOP_ITEMS_BY_ID_QUERY,
+            )
         }
 
     override fun onCreate(): Boolean = true
 
     override fun query(
         uri: Uri,
-        p1: Array<out String?>?,
-        p2: String?,
-        p3: Array<out String?>?,
-        p4: String?,
+        projection: Array<out String?>?,
+        selection: String?,
+        selectionArgs: Array<out String?>?,
+        sortOrder: String?,
     ): Cursor? {
         val code = uriMatcher.match(uri)
         when (code) {
@@ -65,5 +70,6 @@ class ShopListProvider : ContentProvider() {
 
     companion object {
         private const val GET_SHOP_ITEMS_QUERY = 100
+        private const val GET_SHOP_ITEMS_BY_ID_QUERY = 101
     }
 }
