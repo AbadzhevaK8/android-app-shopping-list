@@ -1,5 +1,6 @@
 package com.abadzheva.shoppinglist.presentation
 
+import android.content.ContentValues
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -7,12 +8,17 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.abadzheva.shoppinglist.R
 import com.abadzheva.shoppinglist.databinding.FragmentShopItemBinding
 import com.abadzheva.shoppinglist.domain.ShopItem
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ShopItemFragment : Fragment() {
@@ -159,10 +165,28 @@ class ShopItemFragment : Fragment() {
 
     private fun launchAddMode() {
         binding.saveButton.setOnClickListener {
-            viewModel.addShopItem(
-                binding.etName.text?.toString(),
-                binding.etCount.text?.toString(),
-            )
+            val name = binding.etName.text.toString()
+            val count =
+                binding.etCount.text
+                    .toString()
+                    .toIntOrNull()
+                    ?: 0
+
+            lifecycleScope.launch(Dispatchers.IO) {
+                context?.contentResolver?.insert(
+                    "content://com.abadzheva.shoppinglist/shop_items".toUri(),
+                    ContentValues().apply {
+                        put("id", 0)
+                        put("name", name)
+                        put("count", count)
+                        put("enabled", true)
+                    },
+                )
+
+                withContext(Dispatchers.Main) {
+                    onEditingFinishedListener.onEditingFinished()
+                }
+            }
         }
     }
 

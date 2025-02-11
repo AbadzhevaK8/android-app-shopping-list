@@ -61,25 +61,27 @@ class MainActivity :
             }
         }
         thread {
-            val cursor = contentResolver.query(
-                "content://com.abadzheva.shoppinglist/shop_items/".toUri(),
-                null,
-                null,
-                null,
-                null,
-                null,
-            )
+            val cursor =
+                contentResolver.query(
+                    "content://com.abadzheva.shoppinglist/shop_items/".toUri(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                )
             while (cursor?.moveToNext() == true) {
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
                 val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
                 val count = cursor.getInt(cursor.getColumnIndexOrThrow("count"))
                 val enabled = cursor.getInt(cursor.getColumnIndexOrThrow("enabled")) > 0
-                val shopItem = ShopItem(
-                    id = id,
-                    name = name,
-                    count = count,
-                    enabled = enabled
-                )
+                val shopItem =
+                    ShopItem(
+                        id = id,
+                        name = name,
+                        count = count,
+                        enabled = enabled,
+                    )
                 Log.d("MainActivity", shopItem.toString())
             }
             cursor?.close()

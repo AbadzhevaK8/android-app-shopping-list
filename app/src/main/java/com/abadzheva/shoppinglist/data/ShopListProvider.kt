@@ -5,11 +5,11 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
+import com.abadzheva.shoppinglist.domain.ShopItem
 import com.abadzheva.shoppinglist.presentation.ShopApplication
 import javax.inject.Inject
 
 class ShopListProvider : ContentProvider() {
-
     private val component by lazy {
         (context as ShopApplication).component
     }
@@ -17,18 +17,22 @@ class ShopListProvider : ContentProvider() {
     @Inject
     lateinit var shopListDao: ShopListDao
 
-    private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
-        addURI(
-            "com.abadzheva.shoppinglist",
-            "shop_items",
-            GET_SHOP_ITEMS_QUERY,
-        )
-        addURI(
-            "com.abadzheva.shoppinglist",
-            "shop_items/#",
-            GET_SHOP_ITEMS_BY_ID_QUERY,
-        )
-    }
+    @Inject
+    lateinit var mapper: ShopListMapper
+
+    private val uriMatcher =
+        UriMatcher(UriMatcher.NO_MATCH).apply {
+            addURI(
+                "com.abadzheva.shoppinglist",
+                "shop_items",
+                GET_SHOP_ITEMS_QUERY,
+            )
+            addURI(
+                "com.abadzheva.shoppinglist",
+                "shop_items/#",
+                GET_SHOP_ITEMS_BY_ID_QUERY,
+            )
+        }
 
     override fun onCreate(): Boolean {
         component.inject(this)
@@ -58,10 +62,27 @@ class ShopListProvider : ContentProvider() {
     }
 
     override fun insert(
-        p0: Uri,
-        p1: ContentValues?,
+        uri: Uri,
+        values: ContentValues?,
     ): Uri? {
-        TODO("Not yet implemented")
+        when (uriMatcher.match(uri)) {
+            GET_SHOP_ITEMS_QUERY -> {
+                if (values == null) return null
+                val id = values.getAsInteger("id")
+                val name = values.getAsString("name")
+                val count = values.getAsInteger("count")
+                val enabled = values.getAsBoolean("enabled")
+                val shopItem =
+                    ShopItem(
+                        id = id,
+                        name = name,
+                        count = count,
+                        enabled = enabled,
+                    )
+                shopListDao.addShopItemSync(mapper.mapEntityToDbModel(shopItem))
+            }
+        }
+        return null
     }
 
     override fun delete(
