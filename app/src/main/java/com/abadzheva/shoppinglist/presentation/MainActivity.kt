@@ -1,5 +1,6 @@
 package com.abadzheva.shoppinglist.presentation
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -140,7 +141,14 @@ class MainActivity :
                     direction: Int,
                 ) {
                     val item = shopListAdapter.currentList[viewHolder.adapterPosition]
-                    viewModel.deleteShopItem(item)
+//                    viewModel.deleteShopItem(item)
+                    thread {
+                        contentResolver.delete(
+                            Uri.parse("content://com.abadzheva.shoppinglist/shop_items"),
+                            null,
+                            arrayOf(item.id.toString()),
+                        )
+                    }
                 }
             }
         val itemTouchHelper = ItemTouchHelper(callback)
